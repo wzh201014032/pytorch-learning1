@@ -78,3 +78,150 @@ e = copy.deepcopy(b[:,0])
 print(e[0])
 
 
+#矩阵的点乘
+a = t.tensor([1,2,3,4,5,6])
+b = t.tensor([2,2,2,2,2,2])
+c = a*b
+#就是对应的元素相乘
+print(c)
+
+h = b.view(-1,1)
+print(h.shape)
+#首先这个mm是一个二维的相乘；所以我们为什么a要进行view；是因为开始的时候，a是一个一维的；必须a是一个2维的才可以；
+#另外的话，就是b这个我们view称为了一个6行一列的内容；
+d = t.mm(a.view(1,-1),h)
+print(d)
+
+
+#bmm就是顾名思义，b代表的是batch；所以我们的b就是代表第三个围堵
+
+e = t.bmm(a.view(1,1,-1),h.reshape(1,-1,1))
+print(e)
+
+
+#矩阵的除法
+#如果元素都是float类型的话，那么可以是/来代表除法；如果是int类型，那么就是//,//除了以后，仍然还是整数
+
+f = a//b
+print(f)
+
+#矩阵的切割和拼接也是非常的重要；主要是当我们遇到比如就是那种需要把整个图像进行分区间的情况，就是需要用到拼接或者切割的函数
+
+#拼接函数cat
+#矩阵拼接操作，将符合要求的不同矩阵在某一维度上进行拼接。
+#cat要求进行拼接的矩阵在非拼接维度上完全相同。
+import torch
+
+a1 = torch.rand(4, 3, 32, 32)
+a2 = torch.rand(5, 3, 32, 32)
+a3 = torch.rand(4, 1, 32, 32)
+a4 = torch.rand(4, 3, 16, 32)
+
+# 要求其他维度必须相同
+print("torch.cat([a1, a2], dim=0): ",
+      torch.cat([a1, a2], dim=0).shape)
+print("torch.cat([a1, a3], dim=1): ",
+      torch.cat([a1, a3], dim=1).shape)
+print("torch.cat([a1, a4], dim=2): ",
+      torch.cat([a1, a4], dim=2).shape)
+
+#拼接函数stack
+#矩阵堆叠，将若干维度完全相同的句子在某一维度上进行堆叠。
+
+#stack操作会在指定维度前增加一个维度，然后让后面的维度堆叠起来。
+
+#要求堆叠的矩阵维度完全相同。
+
+import torch
+
+a1 = torch.rand(4, 3, 16, 32)
+a2 = torch.rand(4, 3, 16, 32)
+print("torch.cat([a1, a2], dim=2): ",
+      torch.cat([a1, a2], dim=2).shape)
+
+# stack会新插入一个维度，使其他维度保持不变
+# stack要求两个矩阵维度完全一致
+print("torch.stack([a1, a2], dim=2): ",
+      torch.stack([a1, a2], dim=2).shape)
+
+a = torch.rand(32, 8)
+b = torch.rand(32, 8)
+print("torch.stack([a, b], dim=0): ",
+      torch.stack([a, b], dim=0).shape)
+# 可用于将两个相同的表整合起来，且会保持两张表的独立性
+
+#切割函数split
+#split可对矩阵按长度进行分割。
+
+#split有两种分割模式：
+
+#输入列表：会根据列表中的值进行分割，要求列表值之和等于被分割维度元素个数。
+#输入数值：会根据数值进行分割，会分割出若干个等长的矩阵，当剩余长度小于指定长度时，也会将加入返回列表。要求输入数值小于等于被分割维度元素个数。
+import torch
+
+a = torch.rand(32, 8)
+c = torch.stack([a, a, a, a, a, a], dim=0)
+
+print("c.shape: ", c.shape)
+
+def showSplits(ms):
+    for index, m in enumerate(ms):
+        print("第{}个tensor的shape为 {}".format(
+            index + 1, m.shape
+        ))
+    print()
+
+# 自定义拆分，列表中每个数表示拆分后目标维度的长度
+# 要求列表元素和等于目标维度拆分前的长度
+ms = c.split([1, 2, 1, 1, 1], dim=0)
+print("c.split([1, 2, 1, 1, 1], dim=0):")
+showSplits(ms)
+
+# 按长度拆分，输入的值表示每个拆分后的tensor的目标维度的长度
+# 最后一个tensor如果长度不够也会返回
+ms = c.split(4, dim=0)
+print("c.split(4, dim=0):")
+showSplits(ms)
+
+ms = c.split(8, dim=1)
+print("c.split(8, dim=1):")
+showSplits(ms)
+
+ms = c.split(32, dim=1)
+print("c.split(32, dim=1):")
+showSplits(ms)
+
+#切割函数 chunk
+# chunck可按照数量对矩阵进行分割，将矩阵分割为指定个数。
+#
+# 若矩阵可被均匀分割，则返回指定个数的相同维度矩阵。
+#
+# 若不可被均匀分割，则返回的最后一个矩阵维度会较低。
+
+import torch
+
+a = torch.rand(32, 8)
+c = torch.stack([a, a, a, a, a, a], dim=0)
+
+print("c.shape: ", c.shape)
+
+def showSplits(ms):
+    for index, m in enumerate(ms):
+        print("第{}个tensor的shape为 {}".format(
+            index + 1, m.shape
+        ))
+    print()
+
+# 按个数拆分，输入拆分的个数和维度
+ms = c.chunk(2, dim=0)
+print("c.chunk(2, dim=0):")
+showSplits(ms)
+
+ms = c.chunk(3, dim=0)
+print("c.chunk(3, dim=0):")
+showSplits(ms)
+
+ms = c.chunk(5, dim=1)
+print("c.chunk(5, dim=0):")
+showSplits(ms)
+
