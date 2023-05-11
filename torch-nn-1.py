@@ -129,4 +129,16 @@ optimizer.step() # 保存更新的参数
 #==========================================================================================================================
 
 #损失函数
-#
+from torch.nn import CrossEntropyLoss
+from torch.nn import L1Loss
+from torch.nn import MSELoss
+from torch.nn import NLLLoss
+from torch.nn import BCELoss
+
+#常用的集中损失函数，比如
+#1、交叉熵损失函数 CrossEntropyLoss
+# 交叉熵损失函数，说白了就是softmax；用作更多的是分类任务；输入的概率标签+预测的概率标签
+#如真实概率分布p(xi)的向量为[1, 0, 0]，预测的概率分布q(xi)的向量为：[0.67, 0.24, 0.09]
+#那么算出来的损失值其实就是0.4
+
+#2、L1Loss
