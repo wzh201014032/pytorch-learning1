@@ -262,6 +262,7 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
 
             # 把数据都取个遍
             # 当时我们的标签，好像没有标，那怎么获取到的呢？实际目录名字就当做了是类别名字
+            #但是请注意，这个labels，并不是分类的名字，而是索引！！！！！！！！！！是分类的索引，一定要注意这个问题
             for inputs, labels in dataloaders[phase]:
                 inputs = inputs.to(device)
                 labels = labels.to(device)
