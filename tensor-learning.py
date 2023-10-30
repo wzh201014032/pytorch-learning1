@@ -72,6 +72,7 @@ d = copy.deepcopy(b[0][0])
 #d虽然是一个数字，但是d也是一个tensor格式的；
 print(d)
 print(b)
+print(a)
 
 e = copy.deepcopy(b[:,0])
 #虽然e我们取的是一列，但是我们一列是一个一维的；我们不能认为是一个2维，所以e[0][0]是错误的
@@ -160,7 +161,7 @@ print("torch.stack([a, b], dim=0): ",
 import torch
 
 a = torch.rand(32, 8)
-c = torch.stack([a, a, a, a, a, a], dim=0)
+c = torch.stack([a]*6, dim=0)
 
 print("c.shape: ", c.shape)
 
@@ -173,12 +174,15 @@ def showSplits(ms):
 
 # 自定义拆分，列表中每个数表示拆分后目标维度的长度
 # 要求列表元素和等于目标维度拆分前的长度
+# 本来c的维度是6，32，8；现在从维度0拆分，这个列表代表份数；1个1份，1个2份，一个1份。。。
 ms = c.split([1, 2, 1, 1, 1], dim=0)
 print("c.split([1, 2, 1, 1, 1], dim=0):")
 showSplits(ms)
 
 # 按长度拆分，输入的值表示每个拆分后的tensor的目标维度的长度
 # 最后一个tensor如果长度不够也会返回
+
+# 这里突出的是分割后的每个tensor的维度是4，突出的是每个；
 ms = c.split(4, dim=0)
 print("c.split(4, dim=0):")
 showSplits(ms)

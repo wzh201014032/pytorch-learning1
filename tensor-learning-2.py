@@ -19,7 +19,7 @@ I = torch.tensor(h,dtype=torch.float64)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 #两种放到gpu的手段
-print(a.cuda())
+#print(a.cuda())
 print(b.to(device))
 
 print(c)
@@ -46,10 +46,14 @@ print(b)
 a = torch.tensor([[[[1,3],[2,4]]]],dtype=torch.float)
 modelavg = nn.AvgPool2d(2,1,0)
 modelmax = nn.MaxPool2d(2,1,0)
+
+b = torch.tensor([[[1,3],[2,4]],[[5,6],[7,8]]],dtype=torch.float)
 print("*****************modelpool********************")
 print(modelavg(a))
 print(modelmax(a))
 
+print(modelavg(b))
+print(modelmax(b))
 
 print("*****************relu********************")
 #3、Relu函数
