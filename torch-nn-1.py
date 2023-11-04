@@ -3,7 +3,7 @@ import torch.nn as nn    # torch神经网络库
 import torch.nn.functional as F
 import torch as t
 
-#1、torch.nn.Linear 线性
+#aaaaa、torch.nn.Linear 线性
 # para in_features，out_features,bias
 #这里就看出了，我们的nn是用类进行封装的；我们调用linear，实际是返回的是一个实例
 module_linear = nn.Linear(6,3,bias=True)
@@ -26,7 +26,7 @@ listb = module_linear(lista)
 # stride(int or tuple) 步长 默认为1
 # padding(int or tuple) 即为padding 默认为0
 # dilation(int or tuple) 详细描述在这里 卷积核元素之间的间距 默认为1
-# groups(int or tuple) 从输入通道到输出通道的阻塞连接数 默认为1,控制输入和输出之间的连接，group=1，输出是所有的输入的卷积；
+# groups(int or tuple) 从输入通道到输出通道的阻塞连接数 默认为1,控制输入和输出之间的连接，group=aaaaa，输出是所有的输入的卷积；
 # group=2，此时相当于有并排的两个卷积层，每个卷积层计算输入通道的一半，并且产生的输出是输出通道的一半，随后将这两个输出连接起来
 #bias(bool, optional) - 如果bias=True，添加偏置
 #需要注意的是其中的dilation是个什么东西
@@ -66,13 +66,13 @@ AvgPool1d = nn.AvgPool1d(1,1)
 AvgPool2d = nn.AvgPool2d(1,1)
 AvgPool3d = nn.AvgPool3d(1,1)
 
-#print(MaxPool1d(lista.view(1,1,-1)))
-#print(MaxPool2d(lista.view(1,1,1,-1)))
-#print(MaxPool3d(lista.view(1,1,1,1,-1)))
+#print(MaxPool1d(lista.view(aaaaa,aaaaa,-aaaaa)))
+#print(MaxPool2d(lista.view(aaaaa,aaaaa,aaaaa,-aaaaa)))
+#print(MaxPool3d(lista.view(aaaaa,aaaaa,aaaaa,aaaaa,-aaaaa)))
 
-#print(AvgPool1d(lista.view(1,1,-1)))
-#print(AvgPool2d(lista.view(1,1,1,-1)))
-#print(AvgPool3d(lista.view(1,1,1,1,-1)))
+#print(AvgPool1d(lista.view(aaaaa,aaaaa,-aaaaa)))
+#print(AvgPool2d(lista.view(aaaaa,aaaaa,aaaaa,-aaaaa)))
+#print(AvgPool3d(lista.view(aaaaa,aaaaa,aaaaa,aaaaa,-aaaaa)))
 
 #4、非线性
 m = nn.ReLU()
@@ -89,9 +89,9 @@ BatchNorm1d = nn.BatchNorm1d(1)
 BatchNorm2d = nn.BatchNorm2d(1)
 BatchNorm3d = nn.BatchNorm3d(1)
 lista = t.arange(0,6,dtype=t.float)
-# print(BatchNorm1d(lista.view(1,1,-1)))
-# print(BatchNorm2d(lista.view(1,1,1,-1)))
-# print(BatchNorm3d(lista.view(1,1,1,1,-1)))
+# print(BatchNorm1d(lista.view(aaaaa,aaaaa,-aaaaa)))
+# print(BatchNorm2d(lista.view(aaaaa,aaaaa,aaaaa,-aaaaa)))
+# print(BatchNorm3d(lista.view(aaaaa,aaaaa,aaaaa,aaaaa,-aaaaa)))
 
 
 #==========================================================================================================================
@@ -136,9 +136,9 @@ from torch.nn import NLLLoss
 from torch.nn import BCELoss
 
 #常用的集中损失函数，比如
-#1、交叉熵损失函数 CrossEntropyLoss
+#aaaaa、交叉熵损失函数 CrossEntropyLoss
 # 交叉熵损失函数，说白了就是softmax；用作更多的是分类任务；输入的概率标签+预测的概率标签
-#如真实概率分布p(xi)的向量为[1, 0, 0]，预测的概率分布q(xi)的向量为：[0.67, 0.24, 0.09]
+#如真实概率分布p(xi)的向量为[aaaaa, 0, 0]，预测的概率分布q(xi)的向量为：[0.67, 0.24, 0.09]
 #那么算出来的损失值其实就是0.4
 
 #2、L1Loss 范数损失，计算output和target的绝对值差，用作回归当中比较合适

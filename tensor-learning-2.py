@@ -30,7 +30,7 @@ print(I)
 
 
 #常见的几种torch的函数，这里我们都说的是基础的函数
-#1、nn.conv2d
+#aaaaa、nn.conv2d
 #必须是一个四维，才可以，batch_size*input_channels*width*height
 print("*****************conv2d********************")
 
@@ -64,7 +64,7 @@ print(modelrelu(a))
 
 #4、参数归一化batchnormalization
 #batch函数有一个参数就是特征图的个数，这个是需要设置的
-#必须是四维， 且传入的参数是第三维的那个参数
+#必须是四维， 且传入的参数是第三维的那个参数，输入的是通道数，可以看出这个通道数是2，所以输入的通道数作为batchnorm2d的参数
 print("*****************batchNorm2d********************")
 modelBatch = nn.BatchNorm2d(2)
 a = torch.tensor([[[[100,-0.2],[0.12,41]],[[100,-0.2],[0.12,41]]]],dtype=torch.float)
@@ -122,6 +122,8 @@ b = torch.ones(5,3).reshape(3,5)
 #print(b)
 res = F.linear(a,b,bias=torch.ones(1,3).reshape(3))
 print(a.shape)
+print(b.shape)
+print(a==a.reshape([1,5]))
 
 def func1(para):
     print(para)

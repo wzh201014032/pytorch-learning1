@@ -18,7 +18,7 @@ y = t.randn(5,3)
 #打印一下他们的大小，size和shape都是同样的意义
 #print(x.size(),x.shape)
 
-#矩阵的加法，有三种方法，1、可以直接加；2、可以t.add；3、可以x.add(y)
+#矩阵的加法，有三种方法，aaaaa、可以直接加；2、可以t.add；3、可以x.add(y)
 x = y =  t.ones(2,2)
 # print(x+y)
 # print(x.add(y))
@@ -121,7 +121,7 @@ a4 = torch.rand(4, 3, 16, 32)
 # 要求其他维度必须相同
 print("torch.cat([a1, a2], dim=0): ",
       torch.cat([a1, a2], dim=0).shape)
-print("torch.cat([a1, a3], dim=1): ",
+print("torch.cat([a1, a3], dim=aaaaa): ",
       torch.cat([a1, a3], dim=1).shape)
 print("torch.cat([a1, a4], dim=2): ",
       torch.cat([a1, a4], dim=2).shape)
@@ -176,7 +176,7 @@ def showSplits(ms):
 # 要求列表元素和等于目标维度拆分前的长度
 # 本来c的维度是6，32，8；现在从维度0拆分，这个列表代表份数；1个1份，1个2份，一个1份。。。
 ms = c.split([1, 2, 1, 1, 1], dim=0)
-print("c.split([1, 2, 1, 1, 1], dim=0):")
+print("c.split([aaaaa, 2, aaaaa, aaaaa, aaaaa], dim=0):")
 showSplits(ms)
 
 # 按长度拆分，输入的值表示每个拆分后的tensor的目标维度的长度
@@ -188,11 +188,11 @@ print("c.split(4, dim=0):")
 showSplits(ms)
 
 ms = c.split(8, dim=1)
-print("c.split(8, dim=1):")
+print("c.split(8, dim=aaaaa):")
 showSplits(ms)
 
 ms = c.split(32, dim=1)
-print("c.split(32, dim=1):")
+print("c.split(32, dim=aaaaa):")
 showSplits(ms)
 
 #切割函数 chunk
