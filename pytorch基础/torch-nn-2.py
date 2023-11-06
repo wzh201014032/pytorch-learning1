@@ -22,7 +22,7 @@ from PIL import Image
 
 
 #第一步，首先我们需要组织一下数据结构，目录的结构一个是train，一个是valid；都是代表的是标注之后的数据
-data_dir = './flower_data/'
+data_dir = 'flower_data/'
 train_dir = data_dir + '/train'
 valid_dir = data_dir + '/valid'
 
