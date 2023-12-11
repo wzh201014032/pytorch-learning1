@@ -5,6 +5,7 @@ import numpy as np
 
 #第一种初始化的方法，但是记得Tensor首字母大写
 x = t.Tensor(5,3)
+print(x)
 #如果是小写的话，就和np.array是同样的用法了，就是可以直接复制
 x = t.tensor([1,2,3,4,5])
 #print(x)
