@@ -35,7 +35,9 @@ nllloss就是负对数损失函数，而logsoftmax的作用就是，把值进行
 import torch as t
 import torch.optim as optim
 import numpy as np
+
 #这里必须要做reshape的操作，否则这些所有的数都是同一个样本；
+#我们想想的话，就是全连接都是竖着的多行，就只到要做这个reshape
 inputs = t.tensor([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],dtype=t.float).reshape(-1,1)
 outputs = t.tensor([4.6,6.2,7.8,9.4,11,12.6,14.2,15.8,17.4,19,20.6,22.2,23.8,25.4,27,28.6,30.2,31.8,33.4,35],dtype=t.float).reshape(-1,1)
 
@@ -55,6 +57,10 @@ criterion = nn.MSELoss()
 epoch = 500
 batch_size = 8
 
+
+#如果改成Flase也还是无法求导；还是那句话，就是set_grad_enabled是无法进行求导的；
+for paramtmp in models.parameters():
+    paramtmp.requires_grad = True
 for i in range(0,epoch):
     start = 0
     batch_loss = []
