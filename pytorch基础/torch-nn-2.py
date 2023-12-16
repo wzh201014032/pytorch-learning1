@@ -111,7 +111,7 @@ def initialize_model(model_name, feature_extract, use_pretrained=True):
     return model_ft, input_size
 
 
-model_ft, input_size = initialize_model(model_name, 102, feature_extract, use_pretrained=True)
+model_ft, input_size = initialize_model(model_name, feature_extract, use_pretrained=True)
 
 #GPU计算
 model_ft = model_ft.to(device)

@@ -147,3 +147,5 @@ model = nn.Conv2d(in_channels=1,out_channels=2,stride=1,kernel_size=2,padding=0,
 b = model(a)
 for param in model.parameters():
     print(param.requires_grad)
+
+
