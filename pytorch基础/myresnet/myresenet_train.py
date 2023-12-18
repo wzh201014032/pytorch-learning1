@@ -4,9 +4,13 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import os
+from PIL import Image
+path='flower_data/test/3/image_06612.jpg'
+
 
 from torchvision import transforms, models, datasets
 
+import resnet_mineclass as mineresnet
 ##第一步，首先我们需要组织一下数据结构，目录的结构一个是train，一个是valid；都是代表的是标注之后的数据
 data_dir = 'flower_data/'
 train_dir = data_dir + '/train'
@@ -90,7 +94,76 @@ def initialize_model(model_name, feature_extract, use_pretrained=True):
     #返回输入的大小，还有模型
     return model_ft, input_size
 
-model_ft, input_size = initialize_model(model_name, feature_extract, use_pretrained=True)
+#model_ft, input_size = initialize_model(model_name, feature_extract, use_pretrained=True)
+
+
+#用我们自己的resnet152
+model_ft = mineresnet.resnet152()
 
 #GPU计算
 model_ft = model_ft.to(device)
+
+
+params_to_update = model_ft.parameters()
+
+# 优化器设置
+optimizer_ft = optim.Adam(params_to_update, lr=1e-2)
+scheduler = optim.lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)#学习率每7个epoch衰减成原来的1/10
+#最后一层已经LogSoftmax()了，所以不能nn.CrossEntropyLoss()来计算了，nn.CrossEntropyLoss()相当于logSoftmax()和nn.NLLLoss()整合
+criterion = nn.NLLLoss()
+
+filename='checkpoint.pth'
+def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_inception=False,filename=filename):
+    for epoch in range(100):
+        for phase in ['train', 'valid']:
+            #model.train()和model.eval()的作用
+            #这里我们说train就是为了让它开启batchnormalaztion，以及dropout；eval的话，就是验证集不让它开启；因为eval不需要更新参数
+            if phase == 'train':
+                model.train()  # 训练
+            else:
+                model.eval()   # 验证
+            running_loss = 0.0
+            running_corrects = 0
+
+            for inputs, labels in dataloaders[phase]:
+                #这里的inputs和labels都是一个8维的数组，因为是一个batch，这个for循环会遍历完所有的batch
+                inputs = inputs.to(device)
+                labels = labels.to(device)
+                #print(labels) #tensor([1, 1, 2, 0, 2, 2, 2, 1])
+                #梯度清0
+                optimizer.zero_grad()
+                #前向传播
+                outputs = model(inputs)
+                #计算损失
+                loss = criterion(outputs, labels)
+                preddata, preds = torch.max(outputs, 1)
+                #print(preddata,preds)
+                #反向传播
+                if phase == 'train':
+                    loss.backward()
+                    #更新参数
+                    optimizer.step()
+                # 计算损失
+                running_loss += loss.item() * inputs.size(0)
+                running_corrects += torch.sum(preds == labels.data)
+                print(running_loss,running_corrects)
+
+            epoch_loss = running_loss / len(dataloaders[phase].dataset)
+            epoch_acc = running_corrects.double() / len(dataloaders[phase].dataset)
+            print("the epoch_loss is %s and the epoch_acc is %s"%(epoch_loss,epoch_acc))
+            print("+++++++++++++++++++++++++++")
+        return model
+
+
+model_ft = train_model(model_ft,dataloaders,criterion,optimizer_ft)
+
+
+img=Image.open(path)
+
+img = transforms.CenterCrop(224)(img)
+img = transforms.ToTensor()(img)
+
+res = model_ft(img)
+preddata, preds = torch.max(res, 0)
+print(preddata,preds)
+
