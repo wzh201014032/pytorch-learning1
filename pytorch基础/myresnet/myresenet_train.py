@@ -152,7 +152,7 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
             epoch_acc = running_corrects.double() / len(dataloaders[phase].dataset)
             print("the epoch_loss is %s and the epoch_acc is %s"%(epoch_loss,epoch_acc))
             print("+++++++++++++++++++++++++++")
-        return model
+    return model
 
 
 model_ft = train_model(model_ft,dataloaders,criterion,optimizer_ft)
@@ -162,7 +162,7 @@ img=Image.open(path)
 
 img = transforms.CenterCrop(224)(img)
 img = transforms.ToTensor()(img)
-
+img = torch.unsqueeze(img, 0)
 res = model_ft(img)
 preddata, preds = torch.max(res, 0)
 print(preddata,preds)
